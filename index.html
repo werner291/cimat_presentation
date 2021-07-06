@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIMAT</title>
+    <style>
+
+        body {
+            margin: 0;
+            background: white;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        div.container {
+            max-width:30cm;
+            margin: 0 auto;
+        }
+
+        svg { 
+            width: 100%;
+        }
+
+        .detail-card {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .detail-card .img-frame {
+            height: 6cm;
+            width: 6cm;
+            flex-shrink: 0;
+            margin:1cm;
+        }
+
+        .detail-card .img-frame img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .detail-card .explainer-text {
+            text-align: justify;
+        }
+
+        .interactive-wrapper {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .interactive-wrapper canvas {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+        }
+
+        .interactive-wrapper svg {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+        }
+
+    </style>
+    <script src="js/three.js"></script>
+    <script src="js/OBJLoader.js"></script>
+    <script src="js/MTLLoader.js"></script>
+</head>
+<body>
+    
+    <div class="interactive-wrapper">
+        <!-- <img src="img/cimat_side_cefake.jpg"> -->
+        <canvas id="CIMAT-view" width="1000" height="600"></canvas>
+
+        <svg viewBox="0 0 1000 600" id="interactive-svg">
+            <style>
+                .node-hover {
+                    transition: r 200ms;
+                    fill: rgba(255, 255, 255, 0.9);
+                    stroke: black;
+                    stroke-width: 1px;
+                }
+                a:hover .node-hover {
+                    r: 10px;
+                    fill: transparent;
+                    stroke-width: 2px;
+                }
+                svg text {
+                    font-family: sans-serif;
+                    font-size: 20px;
+                    font-weight: 900;
+                    fill: white;
+                    stroke: black;
+                    stroke-width: 1px;
+
+                    cursor: default;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+                }
+
+                .blink_me {
+                    animation: blinker 4s linear infinite;
+                    }
+                    
+                    @keyframes blinker {
+                    89% {
+                        stroke-width: 0;                
+                    }
+                    90% {
+                        stroke-width: 3mm;      
+                    }
+                    100% {
+                        stroke-width: 0;                
+                    }
+                    }
+            </style>
+
+            <script>
+
+                const points = {
+                    'hydraulics': {
+                        //anchors: [[2793,578]],
+                        anchors: [new THREE.Vector3(0,5,-3)],
+                        label: 'Hydraulisch systeem'
+                    },
+                    'wheel-motor': {
+                        //anchors: [[2450, 1250], [3316, 1468], [520,1824], [1444,2232]],
+                        anchors: [new THREE.Vector3(-2,1,-4),new THREE.Vector3(2,1,-4),new THREE.Vector3(-2,1,4),new THREE.Vector3(2,1,4)],
+                        label: 'Wielmotor'
+                    },
+                    /*
+                    'ce-cert': {
+                        anchors: [[1662,1235]],
+                        label: 'CE-Certificering'
+                    },
+                    'safety': {
+                        anchors: [[1588,1092],[642,852],[3248,676]],
+                        label: 'Veiligheid'
+                    }*/
+                };
+
+                let svg = document.getElementById('interactive-svg');
+
+                for (const [key, value] of Object.entries(points)) {
+
+                    var a = document.createElementNS("http://www.w3.org/2000/svg", 'a');
+                    a.setAttribute('href', '#' + key);
+
+                    value.positionUpdaters = [];
+
+                    for (const anchor of value.anchors) {
+                        const circle = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
+                        circle.setAttribute('class', 'node-hover');
+                        circle.setAttribute('r', 6);
+
+                        a.appendChild(circle);
+
+                        const text = document.createElementNS("http://www.w3.org/2000/svg", 'text');
+                        text.textContent = value.label;
+                        text.setAttribute('text-anchor', 'middle');
+                        svg.appendChild(text);
+
+                        value.positionUpdaters.push((x,y) => {
+                            circle.setAttribute('cx', x);
+                            circle.setAttribute('cy',y);
+                            text.setAttribute('x', x);
+                            text.setAttribute('y', y + 25);
+                        });
+                    }
+
+                    svg.appendChild(a);
+                    
+                }
+
+                let canvas = document.getElementById('CIMAT-view');
+
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera( 75, canvas.width / canvas.height, 0.1, 1000 );
+
+                const renderer = new THREE.WebGLRenderer({canvas:canvas});
+                renderer.setClearColor(0xe8fffd,1.0);
+
+                {
+                    
+                    let mtlloader = new THREE.MTLLoader();
+
+                    mtlloader.load('/model/cimat_test.mtl', (mtl) => {
+
+                        let objloader = new THREE.OBJLoader();
+                        mtl.preload();
+                        objloader.setMaterials(mtl);
+
+                        objloader.load('/model/cimat_test.obj', (obj) => {
+                            scene.add( obj );
+                        })
+                        
+                    });
+
+
+                }
+        
+                {
+                    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5 );
+                    scene.add(ambientLight);
+                }
+        
+                {
+                    const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
+                    directionalLight.position.x = 8.0;
+                    directionalLight.position.y = 5.0;
+                    directionalLight.position.z = 10.0;
+        
+                    scene.add( directionalLight );
+                }
+        
+                let asimuth = Math.PI/4.0;
+                let elevation = Math.PI/4.0;
+        
+                let dragging = false;
+        
+                svg.addEventListener('mousedown', () => {
+                    dragging = true
+                });
+        
+                document.addEventListener('mousemove', (evt) => {
+                    if (dragging) {
+                        asimuth += evt.movementX / 100.0;
+                        
+                        asimuth = 2 * Math.PI * ((asimuth)/(2 * Math.PI)-Math.floor((asimuth)/(2 * Math.PI)));
+        
+                        elevation = Math.max(Math.min(elevation + evt.movementY / 100.0, Math.PI / 3.0), Math.PI / 16.0);
+                    }
+                });
+        
+                document.addEventListener('mouseup', (evt) => {
+                    dragging = false;
+                });
+        
+                function animate() {
+                    requestAnimationFrame( animate );
+
+                    canvas.width  = window.innerWidth;
+                    canvas.height = window.innerHeight;
+
+                    svg.setAttribute('viewBox', '0 0 ' + canvas.width + ' ' + canvas.height )
+
+                    camera.aspect = canvas.width / canvas.height;
+
+                    renderer.setViewport(0,0,canvas.width,canvas.height);
+
+                    const center_height = 2.0;
+                    const distance = 15.0;
+        
+                    camera.position.x = distance * Math.cos(asimuth) * Math.cos(elevation);
+                    camera.position.y = distance * Math.sin(elevation) + center_height;
+                    camera.position.z = distance * Math.sin(asimuth) * Math.cos(elevation);
+        
+                    camera.lookAt(0,center_height,0);
+        
+                    renderer.render( scene, camera );
+
+                    for (const [key, value] of Object.entries(points)) {
+
+                        for (let i = 0; i < value.anchors.length; i++) {
+
+                            let position = value.anchors[i];
+                            let updater = value.positionUpdaters[i];
+
+                            let transformed = position.clone();
+                            transformed.project(camera);
+                            updater(((transformed.x + 1.0)/2.0) * canvas.width,
+                                        ((1 - transformed.y) / 2.0) * canvas.height);
+                        }
+                    }
+                }
+        
+                requestAnimationFrame(animate);
+
+                var hovered = false;
+
+                for (node of document.getElementsByClassName('node-hover')) {
+
+                    node.classList.add('blink_me');
+
+                    node.onmouseover = () => {
+                        
+                        if (!hovered) {
+                            for (node2 of document.getElementsByClassName('node-hover')) {
+                                node2.classList.remove('blink_me');
+                            }
+                        }
+                        
+                        hovered = true;
+
+                    };
+                }
+
+            </script>
+        </svg>
+    </div>
+
+    <div class="container">
+        <div class="detail-card" id="wheel-motor">
+            <div class="img-frame"><img src="placeholder/electric_motor.png"></img></div>
+            <div class="explainer-text">
+                <h2>Electrische motoren</h2>
+                
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent varius fermentum venenatis. Mauris sit amet massa ligula. Fusce mauris justo, dapibus sed lorem sit amet, blandit euismod est. Maecenas suscipit, leo a condimentum lobortis, enim enim congue massa, nec semper justo libero et lacus. Fusce ut accumsan velit. Aenean varius erat in cursus mollis. Fusce posuere fermentum ex pulvinar gravida. Duis faucibus iaculis mauris quis dictum. Vestibulum pharetra id massa eget lobortis. Curabitur mollis arcu quis ex tincidunt, dapibus tincidunt est sollicitudin. Donec rutrum dolor nec erat viverra feugiat. Morbi euismod tortor ut rutrum mattis. Nullam suscipit dapibus neque, ut mollis quam vehicula eu. Integer consectetur ornare mauris, et cursus purus fermentum vel. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Integer pellentesque, ex sed cursus porta, augue nisl fringilla lorem, nec blandit purus justo nec justo. </p>
+            </div>
+        </div>
+        <div class="detail-card" id="hydraulics">
+            <div class="img-frame"><img src="placeholder/hydraulics.jpg"></img></div>
+            <div class="explainer-text">
+                <h2>Hydraulisch Systeem</h2>
+                
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent varius fermentum venenatis. Mauris sit amet massa ligula. Fusce mauris justo, dapibus sed lorem sit amet, blandit euismod est. Maecenas suscipit, leo a condimentum lobortis, enim enim congue massa, nec semper justo libero et lacus. Fusce ut accumsan velit. Aenean varius erat in cursus mollis. Fusce posuere fermentum ex pulvinar gravida. Duis faucibus iaculis mauris quis dictum. Vestibulum pharetra id massa eget lobortis. Curabitur mollis arcu quis ex tincidunt, dapibus tincidunt est sollicitudin. Donec rutrum dolor nec erat viverra feugiat. Morbi euismod tortor ut rutrum mattis. Nullam suscipit dapibus neque, ut mollis quam vehicula eu. Integer consectetur ornare mauris, et cursus purus fermentum vel. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Integer pellentesque, ex sed cursus porta, augue nisl fringilla lorem, nec blandit purus justo nec justo. </p>
+            </div>
+        </div>
+        <div class="detail-card" id="ce-cert">
+            <div class="img-frame"><img src="placeholder/Conformité_Européenne_(logo).svg"></img></div>
+            <div class="explainer-text">
+                <h2>CE-certificering en wetgeving</h2>
+                
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent varius fermentum venenatis. Mauris sit amet massa ligula. Fusce mauris justo, dapibus sed lorem sit amet, blandit euismod est. Maecenas suscipit, leo a condimentum lobortis, enim enim congue massa, nec semper justo libero et lacus. Fusce ut accumsan velit. Aenean varius erat in cursus mollis. Fusce posuere fermentum ex pulvinar gravida. Duis faucibus iaculis mauris quis dictum. Vestibulum pharetra id massa eget lobortis. Curabitur mollis arcu quis ex tincidunt, dapibus tincidunt est sollicitudin. Donec rutrum dolor nec erat viverra feugiat. Morbi euismod tortor ut rutrum mattis. Nullam suscipit dapibus neque, ut mollis quam vehicula eu. Integer consectetur ornare mauris, et cursus purus fermentum vel. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Integer pellentesque, ex sed cursus porta, augue nisl fringilla lorem, nec blandit purus justo nec justo. </p>
+            </div>
+        </div>
+        <div class="detail-card" id="safety">
+            <div class="img-frame"><img src="placeholder/emergency_stop.jpg"></img></div>
+            <div class="explainer-text">
+                <h2>Veiligheid</h2>
+                
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent varius fermentum venenatis. Mauris sit amet massa ligula. Fusce mauris justo, dapibus sed lorem sit amet, blandit euismod est. Maecenas suscipit, leo a condimentum lobortis, enim enim congue massa, nec semper justo libero et lacus. Fusce ut accumsan velit. Aenean varius erat in cursus mollis. Fusce posuere fermentum ex pulvinar gravida. Duis faucibus iaculis mauris quis dictum. Vestibulum pharetra id massa eget lobortis. Curabitur mollis arcu quis ex tincidunt, dapibus tincidunt est sollicitudin. Donec rutrum dolor nec erat viverra feugiat. Morbi euismod tortor ut rutrum mattis. Nullam suscipit dapibus neque, ut mollis quam vehicula eu. Integer consectetur ornare mauris, et cursus purus fermentum vel. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Integer pellentesque, ex sed cursus porta, augue nisl fringilla lorem, nec blandit purus justo nec justo. </p>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>
