@@ -247,7 +247,8 @@
 
                     svg.setAttribute('viewBox', '0 0 ' + canvas.width + ' ' + canvas.height )
 
-                    camera.aspect = canvas.width / canvas.height;
+                    camera.aspect = window.innerWidth / window.innerHeight;
+                    camera.update
 
                     renderer.setViewport(0,0,canvas.width,canvas.height);
 
