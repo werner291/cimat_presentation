@@ -120,13 +120,13 @@ document.addEventListener('mouseup', (evt) => {
 function animate() {
     requestAnimationFrame( animate );
 
-    canvas.width  = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width  = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
 
     svg.setAttribute('viewBox', '0 0 ' + canvas.width + ' ' + canvas.height )
 
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.update
+    camera.aspect = canvas.width / canvas.height;
+    camera.updateProjectionMatrix();
 
     renderer.setViewport(0,0,canvas.width,canvas.height);
 

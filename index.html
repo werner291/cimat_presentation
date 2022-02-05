@@ -96,9 +96,17 @@
                     stroke-width: 0;                
                 }
             }
+            .textbox {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .textbox p {
+                flex-grow: 1;
+            }
         </style>
 
-        <div class="subpage" style="position: relative;">
+        <!-- <div class="subpage" style="position: relative;">
             <canvas id="CIMAT-view" style="position: absolute;"></canvas>
 
             <div style="position: absolute;">
@@ -109,13 +117,27 @@
                 <script src="js/OBJLoader.js"></script>
                 <script src="js/3d_stuff.js"></script>
             </div>
-        </div>
+        </div> -->
 
         <div class="subpage">
 
-            <div class="photos">
+            <!-- <div class="photos">
                 <img src="photos/overview_front_2.JPG">
                 <img src="photos/voorkant.JPG">
+            </div> -->
+
+            <div class="photos" style="position:relative;">
+                <canvas id="CIMAT-view" style="position: absolute; width:100%; height:100%;">
+                </canvas>
+
+                <div style="position: absolute; width:100%; height:100%;">
+                    <svg id="interactive-svg">
+                    </svg>
+                    <script src="js/three.js"></script>
+                    <script src="js/MTLLoader.js"></script>
+                    <script src="js/OBJLoader.js"></script>
+                    <script src="js/3d_stuff.js"></script>
+                </div>
             </div>
 
 
@@ -131,6 +153,10 @@
                     een schoffelmachine en een bodemdichtheidssensor gedemonstreerd. Beiden opgebouwd met standaard
                     componenten
                     zoals gekend in de landbouw.</p>
+
+                <div>
+                    <img src="img/logo.png">
+                </div>                
             </div>
         </div>
 
