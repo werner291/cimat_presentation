@@ -7,6 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CIMAT</title>
     <style>
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: sans-serif;
             margin: 0;
@@ -31,6 +36,7 @@
         .subpage .textbox {
             width: 15cm;
             flex-shrink: 0;
+            flex-basis: 15cm;
             padding: 1cm;
         }
 
@@ -43,6 +49,10 @@
             height: 100%;
             width: 100%;
             object-fit: cover;
+        }
+
+        @media only screen and (max-width: 25cm) {
+
         }
     </style>
     <script>
@@ -133,6 +143,7 @@
                 <div style="position: absolute; width:100%; height:100%;">
                     <svg id="interactive-svg">
                     </svg>
+                    <p style="position: absolute; bottom: 0cm; margin: 5mm auto; left: 0; right: 0; text-align: center; font-size: 8mm; font-weight: bold; opacity: 30%; pointer-events: none;">&larr; Sleep om te draaien. &rarr;</p>
                     <script src="js/three.js"></script>
                     <script src="js/MTLLoader.js"></script>
                     <script src="js/OBJLoader.js"></script>
