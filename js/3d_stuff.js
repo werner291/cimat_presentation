@@ -62,22 +62,15 @@ const renderer = new THREE.WebGLRenderer({canvas:canvas});
 renderer.setClearColor(0xe8fffd,1.0);
 
 {
-    
-    let mtlloader = new THREE.MTLLoader();
+    const loader = new THREE.GLTFLoader();
 
-    mtlloader.load('model/cimat_test.mtl', (mtl) => {
+    loader.load(
+        // resource URL
+        'cimat_2.glb',
+        function ( gltf ) {
 
-        let objloader = new THREE.OBJLoader();
-        mtl.preload();
-        objloader.setMaterials(mtl);
-
-        objloader.load('model/cimat_test.obj', (obj) => {
-            scene.add( obj );
-        })
-        
-    });
-
-
+            scene.add( gltf.scene );
+        });
 }
 
 {
@@ -130,8 +123,8 @@ function animate() {
 
     renderer.setViewport(0,0,canvas.width,canvas.height);
 
-    const center_height = 2.0;
-    const distance = 15.0;
+    const center_height = 1.0;
+    const distance = 5.0;
 
     camera.position.x = distance * Math.cos(asimuth) * Math.cos(elevation);
     camera.position.y = distance * Math.sin(elevation) + center_height;
