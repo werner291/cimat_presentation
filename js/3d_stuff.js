@@ -1,12 +1,6 @@
 const points = {
-    'hydraulics': {
-        //anchors: [[2793,578]],
-        anchors: [new THREE.Vector3(0,5,-3)],
-        label: 'Hydraulisch systeem'
-    },
     'wheel-motor': {
-        //anchors: [[2450, 1250], [3316, 1468], [520,1824], [1444,2232]],
-        anchors: [new THREE.Vector3(-2,1,-4),new THREE.Vector3(2,1,-4),new THREE.Vector3(-2,1,4),new THREE.Vector3(2,1,4)],
+        anchors: ['Motor1'],
         label: 'Wielmotor'
     },
     /*
@@ -70,6 +64,22 @@ renderer.setClearColor(0xe8fffd,1.0);
         function ( gltf ) {
 
             scene.add( gltf.scene );
+
+            console.log(gltf);
+
+            for (key of Object.keys(points)) {
+                points[key].anchor_positions = points[key].anchors.map(anchor => {
+                    let pos = gltf.scene.children.find(child => child.name='Motor1').position;
+                    if (pos) {
+                        console.log('Child anchor: ', key,  pos);
+                        return new THREE.Vector3(pos.x, pos.y, pos.z);
+                    } else {
+                        console.log('Missing anchor.');
+                        return new THREE.Vector3(0.0,0.0,0.0);
+                    }
+                });
+                
+            }
         });
 }
 
@@ -136,15 +146,16 @@ function animate() {
 
     for (const [key, value] of Object.entries(points)) {
 
-        for (let i = 0; i < value.anchors.length; i++) {
+        if (value.anchor_positions) {
+            for (let i = 0; i < value.anchor_positions.length; i++) {
 
-            let position = value.anchors[i];
-            let updater = value.positionUpdaters[i];
+                let position = value.anchor_positions[i];
+                let updater = value.positionUpdaters[i];
 
-            let transformed = position.clone();
-            transformed.project(camera);
-            updater(((transformed.x + 1.0)/2.0) * canvas.width,
-                        ((1 - transformed.y) / 2.0) * canvas.height);
+                let transformed = position.clone();
+                transformed.project(camera);
+                updater(((transformed.x + 1.0)/2.0) * canvas.width, ((1 - transformed.y) / 2.0) * canvas.height);
+            }
         }
     }
 }
