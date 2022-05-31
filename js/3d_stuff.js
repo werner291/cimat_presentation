@@ -1,17 +1,40 @@
 const points = {
     'wheel-motor': {
-        anchors: ['Motor1'],
-        label: 'Wielmotor'
+        anchors: ['Motor1','Motor2','Motor3','Motor4'],
+        label: 'Elektromotoren'
     },
-    /*
+    'steering': {
+        anchors: ['Steer1','Steer2','Steer3','Steer4'],
+        label: '360° sturing'
+    },
+    'adjust': {
+        anchors: ['Adjust1','Adjust2','Adjust3','Adjust4'],
+        label: 'Instelbare breedte'
+    },
     'ce-cert': {
-        anchors: [[1662,1235]],
-        label: 'CE-Certificering'
+        anchors: ['CELogoFake'],
+        label: 'CE Certificering (TODO)'
     },
-    'safety': {
-        anchors: [[1588,1092],[642,852],[3248,676]],
-        label: 'Veiligheid'
-    }*/
+    'batteries': {
+        anchors: ['Batbox'],
+        label: 'Batterijen'
+    },
+    'hydraulics': {
+        anchors: ['Hydraulics'],
+        label: 'Hydrauliek'
+    },
+    'threepoint': {
+        anchors: ['3point','Attach1','Attach2'],
+        label: 'Driepuntshef(?)'
+    },
+    'shape': {
+        anchors: ['Void'],
+        label: 'Vormgeving'
+    },
+    'rtk-gnss': {
+        anchors: ['RTK-GNSS-1','RTK-GNSS-2'],
+        label: 'RTK-GNSS (TODO!)'
+    },
 };
 
 let svg = document.getElementById('interactive-svg');
@@ -69,7 +92,7 @@ renderer.setClearColor(0xe8fffd,1.0);
 
             for (key of Object.keys(points)) {
                 points[key].anchor_positions = points[key].anchors.map(anchor => {
-                    let pos = gltf.scene.children.find(child => child.name='Motor1').position;
+                    let pos = gltf.scene.children.find(child => child.name==anchor).position;
                     if (pos) {
                         console.log('Child anchor: ', key,  pos);
                         return new THREE.Vector3(pos.x, pos.y, pos.z);
@@ -134,7 +157,7 @@ function animate() {
     renderer.setViewport(0,0,canvas.width,canvas.height);
 
     const center_height = 1.0;
-    const distance = 5.0;
+    const distance = 3.0;
 
     camera.position.x = distance * Math.cos(asimuth) * Math.cos(elevation);
     camera.position.y = distance * Math.sin(elevation) + center_height;
