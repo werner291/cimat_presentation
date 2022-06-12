@@ -13,7 +13,7 @@ const points = {
     },
     'ce-cert': {
         anchors: ['CELogoFake'],
-        label: 'CE Certificering (TODO)'
+        label: 'CE Keuring (TODO)'
     },
     'batteries': {
         anchors: ['Batbox'],
@@ -25,7 +25,7 @@ const points = {
     },
     'threepoint': {
         anchors: ['3point','Attach1','Attach2'],
-        label: 'Driepuntshef(?)'
+        label: 'Driepuntshef'
     },
     'shape': {
         anchors: ['Void'],
@@ -170,6 +170,7 @@ function animate() {
     for (const [key, value] of Object.entries(points)) {
 
         if (value.anchor_positions) {
+
             for (let i = 0; i < value.anchor_positions.length; i++) {
 
                 let position = value.anchor_positions[i];

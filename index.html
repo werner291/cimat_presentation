@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CIMAT</title>
     <style>
-
         html {
             scroll-behavior: smooth;
         }
@@ -19,49 +18,44 @@
         }
 
         .container {
-            flex-direction: column;
-            overflow-y: scroll;
+            display: flex;
+
+            flex-direction: row-reverse;
             height: 100vh;
+        }
+
+        @media screen and (orientation:portrait) {
+            .container {
+                flex-direction: column-reverse;
+            }
+        }
+
+        .container * {
+            flex: 1;
+        }
+
+        .textcolumn {
+            overflow-y: scroll;
             scroll-snap-type: y mandatory;
         }
 
         .subpage {
             height: 100vh;
             scroll-snap-align: start;
-            overflow: hidden;
-            display: flex;
-            flex-direction: row-reverse;
+            padding: 5mm;
         }
 
-        .subpage .textbox {
-            box-sizing: border-box;
-            flex-shrink: 0;
-            width: 50%;
-            max-width: 20cm;
-            padding: 1cm;
-            background: url("img/farm_field.jpg");
-            background-size: cover;
+        a[href="#main"] {
+            color: black;
+            background: rgb(216, 216, 216);
+            padding: 5mm;
+            display: inline-block;
+            border-radius: 5mm;
+            text-decoration: none;
         }
 
-        .photos {
-            overflow: hidden;
-            flex-grow: 1;
-        }
-
-        .photos img {
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
-        }
-
-        @media only screen and (max-width: 20cm) {
-            .subpage .photos {
-                display: none;
-            }
-            .subpage .textbox {
-                width: 100%;
-                max-width: none;
-            }
+        a[href="#main"]:hover {
+            background: rgb(199, 199, 199);
         }
     </style>
 </head>
@@ -77,11 +71,13 @@
                 stroke: black;
                 stroke-width: 1px;
             }
+
             a:hover .node-hover {
                 r: 10px;
                 fill: transparent;
                 stroke-width: 2px;
             }
+
             svg text {
                 font-family: sans-serif;
                 font-size: 20px;
@@ -99,22 +95,20 @@
 
             .blink_me {
                 animation: blinker 4s linear infinite;
-                }
-                
-                @keyframes blinker {
-                89% {
-                    stroke-width: 0;                
-                }
-                90% {
-                    stroke-width: 3mm;      
-                }
-                100% {
-                    stroke-width: 0;                
-                }
             }
-            .textbox {
-                display: flex;
-                flex-direction: column;
+
+            @keyframes blinker {
+                89% {
+                    stroke-width: 0;
+                }
+
+                90% {
+                    stroke-width: 3mm;
+                }
+
+                100% {
+                    stroke-width: 0;
+                }
             }
 
             .textbox p {
@@ -122,216 +116,208 @@
             }
         </style>
 
-        <div class="subpage" id="main">
+        <div id="3d-view" style="position:relative;">
+            <canvas id="CIMAT-view" style="position: absolute; width:100%; height:100%;">
+            </canvas>
 
-            <div class="photos" style="position:relative;">
-                <canvas id="CIMAT-view" style="position: absolute; width:100%; height:100%;">
-                </canvas>
-
-                <div style="position: absolute; width:100%; height:100%;">
-                    <svg id="interactive-svg">
-                    </svg>
-                    <p style="position: absolute; bottom: 0cm; margin: 5mm auto; left: 0; right: 0; text-align: center; font-size: 8mm; font-weight: bold; opacity: 30%; pointer-events: none;">&larr; Sleep om te draaien. &rarr;</p>
-                    <script src="js/three.js"></script>
-                    <!-- <script src="js/LoaderUtils.js"></script> -->
-                    <script src="js/GLTFLoader.js"></script>
-                    <script src="js/3d_stuff.js"></script>
-                </div>
+            <div style="position: absolute; width:100%; height:100%;">
+                <svg id="interactive-svg">
+                </svg>
+                <p
+                    style="position: absolute; bottom: 0cm; margin: 5mm auto; left: 0; right: 0; text-align: center; font-size: 8mm; font-weight: bold; opacity: 30%; pointer-events: none;">
+                    &larr; Sleep om te draaien. &rarr;</p>
+                <script src="js/three.js"></script>
+                <!-- <script src="js/LoaderUtils.js"></script> -->
+                <script src="js/GLTFLoader.js"></script>
+                <script src="js/3d_stuff.js"></script>
             </div>
+        </div>
+
+        <div class="textcolumn">
+
+            <div class="subpage" id="main">
+
+                <h2>Het CIMAT platform</h2>
 
 
-            <div class="textbox">
-                <h2>De CIMAT Robot</h2>
-
-
-                <p>De CIMAT robot is een state-of-the-art, multifunctioneel, multi-inzetbaar platform voor
-                    landbouwtoepassingen. De hydraulische driepuntsheffen laten koppeling van verschillende werktuigen toe. Binnen het CIMAT project
-                    wordt een schoffelmachine en een bodemdichtheidssensor gedemonstreerd. Beiden opgebouwd met standaard
+                <p>Het CIMAT platform is een state-of-the-art, multifunctioneel, multi-inzetbaar platform voor
+                    landbouwtoepassingen. De hydraulische driepuntsheffen laten koppeling van verschillende werktuigen
+                    toe. Binnen het CIMAT project
+                    wordt een schoffelmachine en een bodemdichtheidssensor gedemonstreerd. Beiden opgebouwd met
+                    standaard
                     componenten zoals gekend in de landbouw.
                 </p>
 
                 <div>
                     <img src="img/logo.png">
-                </div>                
+                </div>
             </div>
-        </div>
 
 
-        <div class="subpage" id="shape">
+            <div class="subpage" id="shape">
 
 
-            <div class="photos">
-                <img src="photos/overview_side.JPG">
-            </div>
-            <div class="textbox">
 
                 <h2>Vormgeving</h2>
                 <p>
-                    Dankzij de unieke, langwerpige vorm biedt de robot ruimte voor een werktuig onder, voor en achter de robot. 
-                    Het gereedschap kan hierbij breder zijn dan de ingestelde wielbasis. Door het zwaarste werktuig tussen
-                    de wielbasis te hangen blijft de stabiliteit verzekerd, en zij de wielen zo gepositioneerd dat geen enkele
-                    beperking geldt voor de breedte van het gereedschap; hierdoor kan dus een erg wijd stuk grond tegelijk worden
+                    Dankzij de unieke, langwerpige vorm biedt de robot ruimte voor een werktuig onder, voor en achter de
+                    robot.
+                    Het gereedschap kan hierbij breder zijn dan de ingestelde wielbasis. Door het zwaarste werktuig
+                    tussen
+                    de wielbasis te hangen blijft de stabiliteit verzekerd, en zij de wielen zo gepositioneerd dat geen
+                    enkele
+                    beperking geldt voor de breedte van het gereedschap; hierdoor kan dus een erg wijd stuk grond
+                    tegelijk worden
                     behandeld.
-                    De robot zelf is echter relatief compact, waardoor de robot zichzelf ook juist goed zal thuisvinden op
+                    De robot zelf is echter relatief compact, waardoor de robot zichzelf ook juist goed zal thuisvinden
+                    op
                     kleinere velde en kleinschaligere toepassingen.
                 </p>
 
                 <p>
-                    Niet alle velden zijn even recht: bij ruig terrein zullen veel robots en andere landbouwvoertuigen moeite hebben. De vierwielaandrijving in combinatie met de pendelende as verzorgen steeds maximale tractie waardoor het platform ploegzolen en andere oneffenheden makkelijk overwint.
+                    Niet alle velden zijn even recht: bij ruig terrein zullen veel robots en andere landbouwvoertuigen
+                    moeite hebben. De vierwielaandrijving in combinatie met de pendelende as verzorgen steeds maximale
+                    tractie waardoor het platform ploegzolen en andere oneffenheden makkelijk overwint.
                 </p>
                 <a href="#main">Terug</a>
 
             </div>
-        </div>
 
-        <div class="subpage" id="adjust">
+            <div class="subpage" id="adjust">
 
-            <div class="photos">
-                <img src="photos/koker_in_koker.JPG">
-            </div>
-            <div class="textbox">
 
                 <h2>Verstelbaarheid</h2>
 
                 <p>
-                    Staat de rijafstand binnen uw teeltsysteem al vast? 
-                    Geen probleem: een koker-in-koker systeem laat toe de breedte van het platform eenvoudig aan te passen. Dit tot 1.5 keer de minimale werkbreedte van het platform. 
+                    Staat de rijafstand binnen uw teeltsysteem al vast?
+                    Geen probleem: een koker-in-koker systeem laat toe de breedte van het platform eenvoudig aan te
+                    passen. Dit tot 1.5 keer de minimale werkbreedte van het platform.
                     Hierdoor is de robot op elk veld thuis met maar minimale aanpassingen.
-                    Dankzij de simpele, stevige constructie van de uitschuifbare delen is de robot op dit punt een flink stuk steviger dan andere vertelbare of aanpasbare robots.
+                    Dankzij de simpele, stevige constructie van de uitschuifbare delen is de robot op dit punt een flink
+                    stuk steviger dan andere vertelbare of aanpasbare robots.
                 </p>
+
+
+                <a href="#main">Terug</a>
+
             </div>
 
-            <a href="#main">Terug</a>
-        </div>
+            <div class="subpage" id="threepoint">
 
-        <div class="subpage" id="threepoint">
-
-
-            <div class="photos">
-                <img src="photos/driepunt.JPG">
-                <img src="photos/driepunt_2.JPG">
-            </div>
-            <div class="textbox">
 
                 <h2>Bestaand gereedschap</h2>
                 <p>
-                    Het CIMAT-platform is voorzien van een standaard driepuntsophanging en een volledig hydraulisch systeem
-                    met als doel ook bestaande gereedschappen of afgeleiden ervan eraan te kunnen koppelen. 
-                    Het platform kan in feite alles was een normale kleine tractor ook kan, maar dan volledig elektrisch en zonder bestuurder. 
+                    Het CIMAT-platform is voorzien van een standaard driepuntsophanging en een volledig hydraulisch
+                    systeem
+                    met als doel ook bestaande gereedschappen of afgeleiden ervan eraan te kunnen koppelen.
+                    Het platform kan in feite alles was een normale kleine tractor ook kan, maar dan volledig elektrisch
+                    en zonder bestuurder.
                     Net zoals een tractor is de robot ontworpen een multitool te zijn.
                 </p>
                 <p>
-                    Dankzij de standaaard aansluitinging is het dus ook zeer eenvoudig om nieuwe gereedschappen te ontwikkelen voor de robot op basis van bestaande kennis, ervaring en onderdelen die breed op de markt te vinden zijn.
+                    Dankzij de standaaard aansluitinging is het dus ook zeer eenvoudig om nieuwe gereedschappen te
+                    ontwikkelen voor de robot op basis van bestaande kennis, ervaring en onderdelen die breed op de
+                    markt te vinden zijn.
                 </p>
 
                 <a href="#main">Terug</a>
+
+
             </div>
 
-
-        </div>
-
-        <div class="subpage" id="ce-cert">
-
-            <div class="photos">
-                <img src="photos/ce-mark.png">
-            </div>
-            <div class="textbox">
+            <div class="subpage" id="ce-cert">
                 <h2>Wetgeving</h2>
 
                 <p>
-                    Binnen het project trachten we het platform inclusief zijn volledige autonomie CE gecertificeerd te krijgen
+                    Binnen het project trachten we het platform inclusief zijn volledige autonomie CE gecertificeerd te
+                    krijgen
                     waardoor het ook binnen een bedrijfsvoering als arbeidsmiddel kan worden ingezet.
 
-                    Het CIMAT-platform is ontworpen om te voldoen aan alle wet en regelgeving die van toepassing is. 
-                    Met name is het volledig CE-gecertificeerd, waarmee het voldoet aan Europese standaarden voor veiligheid.
+                    Het CIMAT-platform is ontworpen om te voldoen aan alle wet en regelgeving die van toepassing is.
+                    Met name is het volledig CE-gecertificeerd, waarmee het voldoet aan Europese standaarden voor
+                    veiligheid.
                 </p>
 
                 <a href="#main">Terug</a>
             </div>
-        </div>
 
-        <div class="subpage" id="batteries">
+            <div class="subpage" id="batteries">
 
-
-            <div class="photos">
-                <img src="photos/stopcontacten.JPG">
-            </div>
-            <div class="textbox">
                 <h2>Batterijen</h2>
-                <p>De lithium-ion batterijen van het platform verzorgen een energie-capatiteit van 20 kWh. 
-                    Afhankelijk van het type bewerking zal de autonomie in kaart worden gebracht. (hier volgen nog gegevens van), waarmee het
-                    platform minimaal (X uren) autonoom kan rijden, en minstens (X uren) onder zwaardere belasting, zoals bij
-                    toepassingen als mechanisch wieden. 
+                <p>De lithium-ion batterijen van het platform verzorgen een energie-capatiteit van 20 kWh.
+                    Afhankelijk van het type bewerking zal de autonomie in kaart worden gebracht. (hier volgen nog
+                    gegevens van), waarmee het
+                    platform minimaal (X uren) autonoom kan rijden, en minstens (X uren) onder zwaardere belasting,
+                    zoals bij
+                    toepassingen als mechanisch wieden.
                     Verder bieden deze batterijen een vermogen van (X kw), waardoor voldoende
                     capaciteit overblijft voor gemonteerd gereedschap.</p>
 
-                    <p>
-                        Lithium-Ion batterijen hebben veel grotere energiedichtheid (bron?) dan andere types, b.v. loodzuuraccus. 
-                        In vergelijking met diesel hebben lithium-ion batterijen een veel lagere energiedichtheid, zowel in gewicht als omvang, en zijn ze veel duurder in aanschaf. 
-                        Echter, vanwege lagere kosten van electriciteit t.o.v diesel, komt dit type batterij op de langere termijn erboven uit op zowel kosten als milieuimpact.(Citeer zweedse studie)
-                    </p>
+                <p>
+                    Lithium-Ion batterijen hebben veel grotere energiedichtheid (bron?) dan andere types, b.v.
+                    loodzuuraccus.
+                    In vergelijking met diesel hebben lithium-ion batterijen een veel lagere energiedichtheid, zowel in
+                    gewicht als omvang, en zijn ze veel duurder in aanschaf.
+                    Echter, vanwege lagere kosten van electriciteit t.o.v diesel, komt dit type batterij op de langere
+                    termijn erboven uit op zowel kosten als milieuimpact.(Citeer zweedse studie)
+                </p>
 
-                    <p>
-                        Batterijen zijn enigsinds temperatuurgevoelig, en werken ideaal op een temperatuur rond de (TODO: opzoeken).
-                        Er moet worden gelet op extreme temperaturen en anderzijds voorzichtige behandeling van de batterij om ongelukken te voorkomen; in sommige gevallen kunnen Lithium-batterijen in brand vliegen.
-                    </p>
-                    <p>
-                        Wel moet er goed op worden gelet dat batterijen veilig worden opgeslagen; idealiter worden lithium-ion accus opgeslagen met een gedeeltelijke lading (rond de 40%, kijk naar specifieke instructies batterij). Batterijen moeten periodiek gecontroleerd worden en indien nodig opgeladen om schade te voorkomen.
+                <p>
+                    Batterijen zijn enigsinds temperatuurgevoelig, en werken ideaal op een temperatuur rond de (TODO:
+                    opzoeken).
+                    Er moet worden gelet op extreme temperaturen en anderzijds voorzichtige behandeling van de batterij
+                    om ongelukken te voorkomen; in sommige gevallen kunnen Lithium-batterijen in brand vliegen.
+                </p>
+                <p>
+                    Wel moet er goed op worden gelet dat batterijen veilig worden opgeslagen; idealiter worden
+                    lithium-ion accus opgeslagen met een gedeeltelijke lading (rond de 40%, kijk naar specifieke
+                    instructies batterij). Batterijen moeten periodiek gecontroleerd worden en indien nodig opgeladen om
+                    schade te voorkomen.
 
-                        Een opslag in een vuurvaste kast is ook aan te raden, gezien Lithium-batterijen in zeldzame gevallen vlam kunnen vatten.
-                    </p>
+                    Een opslag in een vuurvaste kast is ook aan te raden, gezien Lithium-batterijen in zeldzame gevallen
+                    vlam kunnen vatten.
+                </p>
 
-                    <a href="#main">Terug</a>
+                <a href="#main">Terug</a>
             </div>
-        </div>
 
-        <div class="subpage" id="hydraulics">
+            <div class="subpage" id="hydraulics">
 
-
-            <div class="photos">
-                <img src="photos/stopcontacten.JPG">
-            </div>
-            <div class="textbox">
                 <h2>Hydrauliek</h2>
                 <p>
-                    Om verdere compatibiliteit te verzorgen met bestaande gereedschappen is het platform ook nog voorzien van een kleinschalig hydraulisch systeem. 
+                    Om verdere compatibiliteit te verzorgen met bestaande gereedschappen is het platform ook nog
+                    voorzien van een kleinschalig hydraulisch systeem.
                     Het vermogen van dit systeem is wel enigsinds beperkt.
                 </p>
 
                 <a href="#main">Terug</a>
             </div>
-        </div>
 
-        <div class="subpage" id="wheel-motor">
-
-            <div class="photos">
-                <img src="photos/wheel_motor.JPG">
-            </div>
-
-            <div class="textbox">
+            <div class="subpage" id="wheel-motor">
 
                 <h2>Elektrische aandrijving</h2>
 
                 <p>
-                    Het platform beschikt over 20kW elektrisch aandrijfvermogen. 
-                    Het gaat over elektrisch vermogen. 
-                    Dit niet te vergelijken met een 20kW verbrandingsmotor gezien de efficiëntie hier meer dan twee maal hoger ligt. 
-                    Alle vier de wielen van de robot zijn voorzien van een 5kW elektrische motor. Door de vierwielaandrijving zal de robot veel minder snel komen vast te zitten, en worden krachten veel beter verdeeld. 
-                    Iedere wielmotor kan los worden aangestuurd, voor een preciezer en flexibeler resultaat.Doordat elektrische motoren efficiënter zijn dan dieselmotoren, en gezien dat een geheel mechanisch overbrengingssysteem vanuit een centrale motor niet nodig is, is het gehele systeem energiezuiniger, wat de autonomie bijzonder ten goede komt. 
-                    De robot is ook volledig onafhankelijk van enige CO2-uitstoot, en past dus bij een duurzaam landbouwbedrijf.
+                    Het platform beschikt over 20kW elektrisch aandrijfvermogen.
+                    Het gaat over elektrisch vermogen.
+                    Dit niet te vergelijken met een 20kW verbrandingsmotor gezien de efficiëntie hier meer dan twee maal
+                    hoger ligt.
+                    Alle vier de wielen van de robot zijn voorzien van een 5kW elektrische motor. Door de
+                    vierwielaandrijving zal de robot veel minder snel komen vast te zitten, en worden krachten veel
+                    beter verdeeld.
+                    Iedere wielmotor kan los worden aangestuurd, voor een preciezer en flexibeler resultaat.Doordat
+                    elektrische motoren efficiënter zijn dan dieselmotoren, en gezien dat een geheel mechanisch
+                    overbrengingssysteem vanuit een centrale motor niet nodig is, is het gehele systeem energiezuiniger,
+                    wat de autonomie bijzonder ten goede komt.
+                    De robot is ook volledig onafhankelijk van enige CO2-uitstoot, en past dus bij een duurzaam
+                    landbouwbedrijf.
                 </p>
 
                 <a href="#main">Terug</a>
             </div>
-        </div>
 
-        <div class="subpage" id="steering">
+            <div class="subpage" id="steering">
 
-
-            <div class="photos">
-                <img src="photos/rotation_mechanism.JPG">
-            </div>
-            <div class="textbox">
 
                 <h2>Sturing</h2>
                 <p>De vier wielen van de robot kunnen individueel worden aangestuurd, en volledig rond worden gedraaid,
@@ -346,16 +332,10 @@
                     creëren
                     voor een schoffelmachine.</p>
 
-                    <a href="#main">Terug</a>
+                <a href="#main">Terug</a>
             </div>
-        </div>
 
-        <div class="subpage" id="rtk-gnss">
-
-            <div class="photos">
-                <img src="photos/rtk_gnss.JPG">
-            </div>
-            <div class="textbox">
+            <div class="subpage" id="rtk-gnss">
 
                 <h2>RTK-GNSS</h2>
 
@@ -374,9 +354,9 @@
                     dit
                     project.</p>
 
-                    <a href="#main">Terug</a>
-            </div>
+                <a href="#main">Terug</a>
 
+            </div>
         </div>
 
     </div>
