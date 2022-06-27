@@ -41,9 +41,11 @@
         }
 
         .subpage {
-            height: 100vh;
+            height: 100%;
             scroll-snap-align: start;
             padding: 5mm;
+            overflow-y: scroll;
+            box-sizing: border-box;
         }
 
         a[href="#main"] {
@@ -115,6 +117,19 @@
             .textbox p {
                 flex-grow: 1;
             }
+
+            #drag-to-rotate {
+                position: absolute; 
+                bottom: 0cm; 
+                margin: 1mm auto; 
+                left: 0; 
+                right: 0; 
+                text-align: center; 
+                font-size: 8mm; 
+                font-weight: bold; 
+                pointer-events: none;
+                color: white;
+            }
         </style>
 
         <div id="3d-view" style="position:relative; overflow:hidden; touch-action: none;">
@@ -124,8 +139,7 @@
             <div style="position: absolute; width:100%; height:100%;">
                 <svg id="interactive-svg">
                 </svg>
-                <p
-                    style="position: absolute; bottom: 0cm; margin: 5mm auto; left: 0; right: 0; text-align: center; font-size: 8mm; font-weight: bold; opacity: 30%; pointer-events: none;">
+                <p id="drag-to-rotate">
                     &larr; Sleep om te draaien. &rarr;</p>
                 <script src="js/three.js"></script>
                 <!-- <script src="js/LoaderUtils.js"></script> -->
@@ -141,12 +155,14 @@
                 <h2>Het CIMAT platform</h2>
 
 
-                <p>Het CIMAT platform is een state-of-the-art, multifunctioneel, multi-inzetbaar platform voor
-                    landbouwtoepassingen. De hydraulische driepuntsheffen laten koppeling van verschillende werktuigen
-                    toe. Binnen het CIMAT project
-                    wordt een schoffelmachine en een bodemdichtheidssensor gedemonstreerd. Beiden opgebouwd met
-                    standaard
-                    componenten zoals gekend in de landbouw.
+                <p>
+                    Het CIMAT-platform is een state-of-the-art, multifunctioneel autonoom platform voor
+                    landbouwtoepassingen. 
+
+                    Binnen het CIMAT project wordt een schoffelmachine en een bodemdichtheidssensor gedemonstreerd.
+
+                    Echter, dankzij het gebruik van hydraulische driepuntshevven en standaard componenten kunnen
+                    verschillende standaard werktuigen worden aangekoppeld.
                 </p>
 
                 <div>
@@ -157,22 +173,14 @@
 
             <div class="subpage" id="shape">
 
-
-
                 <h2>Vormgeving</h2>
+
                 <p>
                     Dankzij de unieke, langwerpige vorm biedt de robot ruimte voor een werktuig onder, voor en achter de
-                    robot.
-                    Het gereedschap kan hierbij breder zijn dan de ingestelde wielbasis. Door het zwaarste werktuig
-                    tussen
-                    de wielbasis te hangen blijft de stabiliteit verzekerd, en zij de wielen zo gepositioneerd dat geen
-                    enkele
-                    beperking geldt voor de breedte van het gereedschap; hierdoor kan dus een erg wijd stuk grond
-                    tegelijk worden
-                    behandeld.
+                    robot. Hierdoor kan een breed stuk grond worden bekerkt dan de wielbasis, en is stabiliteit verzekerd.
+
                     De robot zelf is echter relatief compact, waardoor de robot zichzelf ook juist goed zal thuisvinden
-                    op
-                    kleinere velde en kleinschaligere toepassingen.
+                    op kleinere velde en kleinschaligere toepassingen.
                 </p>
 
                 <p>
@@ -180,6 +188,21 @@
                     moeite hebben. De vierwielaandrijving in combinatie met de pendelende as verzorgen steeds maximale
                     tractie waardoor het platform ploegzolen en andere oneffenheden makkelijk overwint.
                 </p>
+
+                <a href="#main">Terug</a>
+
+            </div>
+
+            <div class="subpage" id="swing-axle">
+
+                <h2>Ophanging</h2>
+
+                <p>
+                    Niet alle velden zijn even recht: bij ruig terrein zullen veel robots en andere landbouwvoertuigen
+                    moeite hebben. De vierwielaandrijving in combinatie met de pendelende as verzorgen steeds maximale
+                    tractie waardoor het platform ploegzolen en andere oneffenheden makkelijk overwint.
+                </p>
+
                 <a href="#main">Terug</a>
 
             </div>
@@ -190,12 +213,10 @@
                 <h2>Verstelbaarheid</h2>
 
                 <p>
-                    Staat de rijafstand binnen uw teeltsysteem al vast?
-                    Geen probleem: een koker-in-koker systeem laat toe de breedte van het platform eenvoudig aan te
-                    passen. Dit tot 1.5 keer de minimale werkbreedte van het platform.
+                    Dankzij het koker-in-koker system kan de breedte van de robot eenvoudig worden versteld, dit tot 1.5 keer de minimale werkbreedte. 
                     Hierdoor is de robot op elk veld thuis met maar minimale aanpassingen.
-                    Dankzij de simpele, stevige constructie van de uitschuifbare delen is de robot op dit punt een flink
-                    stuk steviger dan andere vertelbare of aanpasbare robots.
+
+                    Dankzij de simpele, stevige constructie de robot op dit punt een flink stuk steviger dan andere verstelbare of aanpasbare robots.
                 </p>
 
 
@@ -209,14 +230,13 @@
                 <h2>Bestaand gereedschap</h2>
                 <p>
                     Het CIMAT-platform is voorzien van een standaard driepuntsophanging en een volledig hydraulisch
-                    systeem
-                    met als doel ook bestaande gereedschappen of afgeleiden ervan eraan te kunnen koppelen.
+                    systeem met als doel ook bestaande gereedschappen of afgeleiden ervan eraan te kunnen koppelen.
                     Het platform kan in feite alles was een normale kleine tractor ook kan, maar dan volledig elektrisch
                     en zonder bestuurder.
                     Net zoals een tractor is de robot ontworpen een multitool te zijn.
                 </p>
                 <p>
-                    Dankzij de standaaard aansluitinging is het dus ook zeer eenvoudig om nieuwe gereedschappen te
+                    Dankzij de standaard aansluitinging is het dus ook zeer eenvoudig om nieuwe gereedschappen te
                     ontwikkelen voor de robot op basis van bestaande kennis, ervaring en onderdelen die breed op de
                     markt te vinden zijn.
                 </p>
@@ -231,8 +251,7 @@
 
                 <p>
                     Binnen het project trachten we het platform inclusief zijn volledige autonomie CE gecertificeerd te
-                    krijgen
-                    waardoor het ook binnen een bedrijfsvoering als arbeidsmiddel kan worden ingezet.
+                    krijgen waardoor het ook binnen een bedrijfsvoering als arbeidsmiddel kan worden ingezet.
 
                     Het CIMAT-platform is ontworpen om te voldoen aan alle wet en regelgeving die van toepassing is.
                     Met name is het volledig CE-gecertificeerd, waarmee het voldoet aan Europese standaarden voor
@@ -245,12 +264,12 @@
             <div class="subpage" id="batteries">
 
                 <h2>Batterijen</h2>
-                <p>De lithium-ion batterijen van het platform verzorgen een energie-capatiteit van 20 kWh.
+
+                <p>
+                    De lithium-ion batterijen van het platform verzorgen een energie-capatiteit van 20 kWh.
                     Afhankelijk van het type bewerking zal de autonomie in kaart worden gebracht. (hier volgen nog
-                    gegevens van), waarmee het
-                    platform minimaal (X uren) autonoom kan rijden, en minstens (X uren) onder zwaardere belasting,
-                    zoals bij
-                    toepassingen als mechanisch wieden.
+                    gegevens van), waarmee het platform minimaal (X uren) autonoom kan rijden, en minstens (X uren) onder zwaardere belasting,
+                    zoals bij toepassingen als mechanisch wieden.
                     Verder bieden deze batterijen een vermogen van (X kw), waardoor voldoende
                     capaciteit overblijft voor gemonteerd gereedschap.</p>
 
@@ -260,10 +279,10 @@
                     In vergelijking met diesel hebben lithium-ion batterijen een veel lagere energiedichtheid, zowel in
                     gewicht als omvang, en zijn ze veel duurder in aanschaf.
                     Echter, vanwege lagere kosten van electriciteit t.o.v diesel, komt dit type batterij op de langere
-                    termijn erboven uit op zowel kosten als milieuimpact.(Citeer zweedse studie)
+                    termijn erboven uit op zowel <a href="https://doi.org/10.1016/j.biosystemseng.2021.02.005">kosten</a> als <a href="https://doi.org/10.3390/su132011285">milieuimpact</a>. 
                 </p>
 
-                <p>
+                <!-- <p>
                     Batterijen zijn enigsinds temperatuurgevoelig, en werken ideaal op een temperatuur rond de (TODO:
                     opzoeken).
                     Er moet worden gelet op extreme temperaturen en anderzijds voorzichtige behandeling van de batterij
@@ -277,7 +296,7 @@
 
                     Een opslag in een vuurvaste kast is ook aan te raden, gezien Lithium-batterijen in zeldzame gevallen
                     vlam kunnen vatten.
-                </p>
+                </p> -->
 
                 <a href="#main">Terug</a>
             </div>
@@ -299,14 +318,13 @@
                 <h2>Elektrische aandrijving</h2>
 
                 <p>
-                    Het platform beschikt over 20kW elektrisch aandrijfvermogen.
-                    Het gaat over elektrisch vermogen.
-                    Dit niet te vergelijken met een 20kW verbrandingsmotor gezien de efficiëntie hier meer dan twee maal
-                    hoger ligt.
-                    Alle vier de wielen van de robot zijn voorzien van een 5kW elektrische motor. Door de
+                    Alle vier de wielen van de robot zijn voorzien van een 5kW elektrische motor, voor 20kw totaal vermogen.
+                     Door de
                     vierwielaandrijving zal de robot veel minder snel komen vast te zitten, en worden krachten veel
                     beter verdeeld.
-                    Iedere wielmotor kan los worden aangestuurd, voor een preciezer en flexibeler resultaat.Doordat
+                    Iedere wielmotor kan los worden aangestuurd, voor een preciezer en flexibeler resultaat.
+
+                    Doordat
                     elektrische motoren efficiënter zijn dan dieselmotoren, en gezien dat een geheel mechanisch
                     overbrengingssysteem vanuit een centrale motor niet nodig is, is het gehele systeem energiezuiniger,
                     wat de autonomie bijzonder ten goede komt.
@@ -321,17 +339,13 @@
 
 
                 <h2>Sturing</h2>
-                <p>De vier wielen van de robot kunnen individueel worden aangestuurd, en volledig rond worden gedraaid,
-                    waardoor de
-                    robot volledig omnidirectioneel kan bewegen en sturen: de robot kan zowel vooruit, achteruit, of
-                    zelfs
-                    volledig
-                    zijwaarts rijden zonder verlies van kracht, en kan de robot zelfs op zijn plek draaien. Dit beidt
-                    voordelen om
-                    kort te draaien op de kopakker, eenvoudig een werktuig aan te koppelen of zelfs een sideshift effect
-                    te
-                    creëren
-                    voor een schoffelmachine.</p>
+                <p>
+                    De vier wielen van de robot kunnen individueel worden aangestuurd, en volledig rond worden gedraaid, waardoor de robot volledig      
+                    omnidirectioneel kan bewegen en sturen: de robot kan zowel vooruit, achteruit, of zelfs volledig
+                    zijwaarts rijden zonder verlies van kracht, en kan de robot zelfs op zijn plek draaien. 
+                    Dit beidt voordelen om kort te draaien op de kopakker, eenvoudig een werktuig aan te koppelen of zelfs een sideshift effect
+                    te creëren voor een schoffelmachine.
+                </p>
 
                 <a href="#main">Terug</a>
             </div>
@@ -340,20 +354,16 @@
 
                 <h2>RTK-GNSS</h2>
 
-                <p>Het CIMAT-platform lokaliseert zich binnen en velt via twee RTK-GNSS-ontvangers. Anders dan een
-                    navigatiesysteem
-                    voor auto's en smartphones, is RTK-GNSS nauwkeurig tot op de centimeter.
+                <p>
+                    Het CIMAT-platform lokaliseert zich binnen en velt via twee RTK-GNSS-ontvangers. 
+                    Anders dan een navigatiesysteem voor auto's en smartphones, is RTK-GNSS nauwkeurig tot op de centimeter.
 
                     Door middel van dit systeem zullen dus taken als in-kaart-brenging van het veld zeer accuraat worden
-                    uitgevoerd;
-                    deze kaarten kunnen dan later gebruikt worden om exact aan te geven waar opvolgende taken moeten
-                    worden
-                    uitgevoerd, zoals de positie en afstand van gewasrijen.
+                    uitgevoerd; deze kaarten kunnen dan later gebruikt worden om exact aan te geven waar opvolgende taken moeten
+                    worden uitgevoerd, zoals de positie en afstand van gewasrijen.
 
-                    Ook andere navigatie strategieën zoals het volgen van ruggen of de gewasrijen worden bestudeerd
-                    tijdens
-                    dit
-                    project.</p>
+                    Ook andere navigatie strategieën zoals het volgen van ruggen of de gewasrijen worden bestudeerd tijdens dit project.
+                </p>
 
                 <a href="#main">Terug</a>
 

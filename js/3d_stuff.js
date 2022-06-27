@@ -14,6 +14,10 @@ const points = {
         anchors: ['Motor1'],//,'Motor2','Motor3','Motor4'],
         label: 'Elektromotoren'
     },
+    'swing-axle': {
+        anchors: ['SwingingAxis'],//,'SwingingAxis2'],
+        label: 'Ophanging'
+    },
     'steering': {
         anchors: ['Steer1'],//,'Steer2','Steer3','Steer4'],
         label: '360° sturing'
