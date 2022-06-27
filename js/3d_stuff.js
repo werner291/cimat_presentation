@@ -11,15 +11,15 @@
  */
 const points = {
     'wheel-motor': {
-        anchors: ['Motor1','Motor2','Motor3','Motor4'],
+        anchors: ['Motor1'],//,'Motor2','Motor3','Motor4'],
         label: 'Elektromotoren'
     },
     'steering': {
-        anchors: ['Steer1','Steer2','Steer3','Steer4'],
+        anchors: ['Steer1'],//,'Steer2','Steer3','Steer4'],
         label: '360° sturing'
     },
     'adjust': {
-        anchors: ['Adjust1','Adjust2','Adjust3','Adjust4'],
+        anchors: ['Adjust1'],//,'Adjust2','Adjust3','Adjust4'],
         label: 'Instelbare breedte'
     },
     'ce-cert': {
@@ -35,7 +35,7 @@ const points = {
         label: 'Hydrauliek'
     },
     'threepoint': {
-        anchors: ['3point','Attach1','Attach2'],
+        anchors: ['3point','Attach1'],//,'Attach2'],
         label: 'Driepuntshef'
     },
     'shape': {
@@ -43,7 +43,7 @@ const points = {
         label: 'Vormgeving'
     },
     'rtk-gnss': {
-        anchors: ['RTK-GNSS-1','RTK-GNSS-2'],
+        anchors: ['RTK-GNSS-1'],//,'RTK-GNSS-2'],
         label: 'RTK-GNSS'
     },
 };
@@ -84,11 +84,14 @@ for (const [key, value] of Object.entries(points)) {
         a.appendChild(text);
 
         // Create the callback that will move the text and the circle around as the user moves the 3D view.
-        value.positionUpdaters.push((x,y) => {
+        value.positionUpdaters.push((x,y,visible) => {
             circle.setAttribute('cx', x);
             circle.setAttribute('cy',y);
             text.setAttribute('x', x);
             text.setAttribute('y', y + 25);
+
+            circle.setAttribute('visibility', visible ? 'visible' : 'hidden');
+            text.setAttribute('visibility', visible ? 'visible' : 'hidden');
         });
     }
 
@@ -164,32 +167,48 @@ let elevation = Math.PI/4.0;
 
 // Keep track of whether the mouse button is down or not.
 let dragging = false;
+let pointer_prevX = 0;
+let pointer_prevY = 0;
 
-// When the mouse button goes down, keep an eye on whether the user moves the mouse.
+// When the pointer button goes down, keep an eye on whether the user moves the pointer.
 // Listener is attached to the SVG since it covers the canvas.
-svg.addEventListener('mousedown', () => {
-    dragging = true
+svg.addEventListener('pointerdown', (evt) => {
+    dragging = true;
+
+    // Get the current mouse position.
+    pointer_prevX = evt.screenX;
+    pointer_prevY = evt.screenY;
 });
 
-// Same, but for mouse-up.
-// Note: this listener is document-wide, in case the user drags the mouse out of the 3D view.
-document.addEventListener('mouseup', (evt) => {
+// Same, but for pointer-up.
+// Note: this listener is document-wide, in case the user drags the pointer out of the 3D view.
+document.addEventListener('pointerup', (evt) => {
     dragging = false;
 });
 
-// When the mouse is moved and the user us dragging, adjust the camera.
-document.addEventListener('mousemove', (evt) => {
+// When the pointer is moved and the user us dragging, adjust the camera.
+document.addEventListener('pointermove', (evt) => {
     if (dragging) {
 
+        // For some reason, evt.movementX and evt.movementY are not available on iOS.
+        // So, we compute them ourselves.
+        let movementX = evt.screenX - pointer_prevX;
+        let movementY = evt.screenY - pointer_prevY;
+
+        // Record the new position so we can get the delta next frame.
+        pointer_prevX = evt.screenX;
+        pointer_prevY = evt.screenY;
+
         // Horizontal movement: rotate the camera around the vertical axis.
-        asimuth += evt.movementX / 100.0;
+        asimuth += movementX / 100.0;
         
         // Wrap the angle around to keep it in the range [0,2pi).
         asimuth = 2 * Math.PI * ((asimuth)/(2 * Math.PI)-Math.floor((asimuth)/(2 * Math.PI)));
 
         // Vertical movement: rotate the camera up and down.
         // Clamp the angle in the range [pi/16,pi/3].
-        elevation = Math.max(Math.min(elevation + evt.movementY / 100.0, Math.PI / 3.0), Math.PI / 16.0);
+        elevation = Math.max(Math.min(elevation + movementY / 100.0, Math.PI / 3.0), Math.PI / 16.0);
+
     }
 });
 
@@ -229,6 +248,8 @@ function animate() {
     // Render the scene.
     renderer.render( scene, camera );
 
+    let already_placed = [];
+
     // Update the position of each anchor point.
     for (const [key, value] of Object.entries(points)) {
 
@@ -236,25 +257,21 @@ function animate() {
         // This is not noticeable to the user, so just skip those frames.
         if (value.anchor_positions) {
 
-            // Go over every anchor point and update its position.
             for (let i = 0; i < value.anchor_positions.length; i++) {
 
-                // Look up the 3D-coordinate of the anchor point
-                let position = value.anchor_positions[i];
-
-                // Fetch the callback function that updates the anchor point position.
-                let updater = value.positionUpdaters[i];
-
                 // Clone the position such that it can be modified without affecting the original.
-                let transformed = position.clone();
+                let transformed = value.anchor_positions[i].clone();
 
                 // Transform the position into the camera's coordinate system.
                 transformed.project(camera);
 
-                // Update the anchor point position by calling the callback.
-                // We translate from NDC to screen/canvas coordinates.
-                updater(((transformed.x + 1.0)/2.0) * canvas.width, ((1 - transformed.y) / 2.0) * canvas.height);
+                value.positionUpdaters[i](
+                    ((transformed.x + 1.0)/2.0) * canvas.width,
+                    ((1 - transformed.y) / 2.0) * canvas.height,
+                    true
+                );  
             }
+            
         }
     }
 }

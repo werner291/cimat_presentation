@@ -37,6 +37,7 @@
         .textcolumn {
             overflow-y: scroll;
             scroll-snap-type: y mandatory;
+            max-width: 15cm;
         }
 
         .subpage {
@@ -116,7 +117,7 @@
             }
         </style>
 
-        <div id="3d-view" style="position:relative;">
+        <div id="3d-view" style="position:relative; overflow:hidden; touch-action: none;">
             <canvas id="CIMAT-view" style="position: absolute; width:100%; height:100%;">
             </canvas>
 
