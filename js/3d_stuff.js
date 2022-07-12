@@ -12,11 +12,11 @@
 const points = {
     'wheel-motor': {
         anchors: ['Motor1'],//,'Motor2','Motor3','Motor4'],
-        label: 'Elektromotoren'
+        label: 'Wielmotoren'
     },
     'swing-axle': {
         anchors: ['SwingingAxis'],//,'SwingingAxis2'],
-        label: 'Ophanging'
+        label: 'Pendelende Ophanging'
     },
     'steering': {
         anchors: ['Steer1'],//,'Steer2','Steer3','Steer4'],
