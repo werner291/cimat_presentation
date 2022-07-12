@@ -9,11 +9,11 @@ const points = {
     },
     'adjust': {
         anchors: ['Adjust1','Adjust2','Adjust3','Adjust4'],
-        label: 'Instelbare breedte'
+        label: 'Aanpasbare werkbreedte'
     },
     'ce-cert': {
         anchors: ['CELogoFake'],
-        label: 'CE Keuring (TODO)'
+        label: 'Wetgeving'
     },
     'batteries': {
         anchors: ['Batbox'],
@@ -29,7 +29,7 @@ const points = {
     },
     'shape': {
         anchors: ['Void'],
-        label: 'Vormgeving'
+        label: 'Vormgeving robotconstructie'
     },
     'rtk-gnss': {
         anchors: ['RTK-GNSS-1','RTK-GNSS-2'],
